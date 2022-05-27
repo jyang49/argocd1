@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  labels:
+    app: my-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app-b
+  minReadySeconds: 12
+  template:
+    metadata:
+      name: my-pod
+      labels:
+        app: my-app-b
+    spec:
+      containers:
+      - name: myapp
+        image: jyang4900/myapp:v1
+        ports:
+        - containerPort: 8080
