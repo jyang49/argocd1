@@ -2,19 +2,19 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: '{{appName}}-config'
-  namespace: '{{namespace}}'
+  name: echo-config
+  namespace: echo-one
 data:
-  MESSAGE: '{{message}}'
+  MESSAGE: "message in configmap"
 ---
 # manifests/echo-template/pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: '{{appName}}-pod'
-  namespace: '{{namespace}}'
+  name: echo-pod
+  namespace: echo-one
   labels:
-    app: '{{appName}}'
+    app: echo-app
 spec:
   containers:
     - name: echo-container
@@ -22,19 +22,19 @@ spec:
       command: ["/bin/sh", "-c", "echo $(MESSAGE) && sleep 3600"]
       envFrom:
         - configMapRef:
-            name: '{{appName}}-config'
+            name: echo-config
 ---
 # manifests/echo-template/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: '{{appName}}-service'
-  namespace: '{{namespace}}'
+  name: echo-service
+  namespace: echo-one
   labels:
-    app: '{{appName}}'
+    app: echo-app
 spec:
   selector:
-    app: '{{appName}}-pod'
+    app: echo-app
   ports:
     - protocol: TCP
       port: 80
